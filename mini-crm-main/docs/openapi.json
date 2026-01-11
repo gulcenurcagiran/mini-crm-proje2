@@ -1,0 +1,628 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Mini-CRM API",
+    "version": "1.0.0",
+    "description": "RESTful API for managing customers, orders, products, and inventory",
+    "contact": {
+      "name": "API Support"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Customers",
+      "description": "Customer management endpoints"
+    },
+    {
+      "name": "Orders",
+      "description": "Order management endpoints"
+    },
+    {
+      "name": "Products",
+      "description": "Product management endpoints"
+    },
+    {
+      "name": "Stock",
+      "description": "Stock/inventory management endpoints"
+    }
+  ],
+  "paths": {
+    "/customers": {
+      "get": {
+        "summary": "List all customers",
+        "tags": ["Customers"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            },
+            "description": "Items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of customers"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new customer",
+        "tags": ["Customers"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Customer created successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "summary": "Get customer by ID",
+        "tags": ["Customers"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer details"
+          },
+          "404": {
+            "description": "Customer not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update customer",
+        "tags": ["Customers"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer updated successfully"
+          },
+          "404": {
+            "description": "Customer not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete customer",
+        "tags": ["Customers"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Customer deleted successfully"
+          },
+          "404": {
+            "description": "Customer not found"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "List all orders with optional filtering",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "customerId",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Filter by customer ID"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["pending", "processing", "shipped", "completed", "cancelled"]
+            },
+            "description": "Filter by order status"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of orders"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new order",
+        "tags": ["Orders"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "summary": "Get order by ID",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order details with items"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update order (status, notes)",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order updated successfully"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete/cancel order",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Order deleted successfully"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "List all products",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "category",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by category"
+          },
+          {
+            "in": "query",
+            "name": "isActive",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter by active status"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of products"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new product",
+        "tags": ["Products"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Get product by ID",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product details with stock"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update product",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete product",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Product deleted successfully"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      }
+    },
+    "/products/{id}/stock": {
+      "put": {
+        "summary": "Update product stock",
+        "tags": ["Stock"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StockUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Stock updated successfully"
+          },
+          "404": {
+            "description": "Product not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" },
+          "address": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CustomerInput": {
+        "type": "object",
+        "required": ["firstName"],
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" },
+          "address": { "type": "string" },
+          "isActive": { "type": "boolean", "default": true }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "customerId": { "type": "integer", "nullable": true },
+          "status": { "type": "string", "enum": ["pending", "processing", "shipped", "completed", "cancelled"] },
+          "totalAmount": { "type": "number", "format": "decimal" },
+          "notes": { "type": "string" },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/OrderItem" }
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "OrderItem": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "orderId": { "type": "integer" },
+          "productId": { "type": "integer" },
+          "quantity": { "type": "integer" },
+          "price": { "type": "number", "format": "decimal" }
+        }
+      },
+      "OrderInput": {
+        "type": "object",
+        "required": ["items"],
+        "properties": {
+          "customerId": { "type": "integer", "nullable": true },
+          "status": { "type": "string", "enum": ["pending", "processing", "shipped", "completed", "cancelled"], "default": "pending" },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["productId", "quantity", "price"],
+              "properties": {
+                "productId": { "type": "integer" },
+                "quantity": { "type": "integer", "minimum": 1 },
+                "price": { "type": "number", "format": "decimal", "minimum": 0 }
+              }
+            }
+          },
+          "notes": { "type": "string" }
+        }
+      },
+      "OrderUpdate": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["pending", "processing", "shipped", "completed", "cancelled"] },
+          "notes": { "type": "string" }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "price": { "type": "number", "format": "decimal" },
+          "sku": { "type": "string" },
+          "category": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "stock": { "$ref": "#/components/schemas/Stock" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "ProductInput": {
+        "type": "object",
+        "required": ["name", "price"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "price": { "type": "number", "format": "decimal", "minimum": 0 },
+          "sku": { "type": "string" },
+          "category": { "type": "string" },
+          "isActive": { "type": "boolean", "default": true }
+        }
+      },
+      "Stock": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "productId": { "type": "integer" },
+          "quantity": { "type": "integer" },
+          "reservedQuantity": { "type": "integer" },
+          "reorderLevel": { "type": "integer" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "StockUpdate": {
+        "type": "object",
+        "required": ["quantity", "operation"],
+        "properties": {
+          "quantity": { "type": "integer", "minimum": 1 },
+          "operation": { "type": "string", "enum": ["add", "subtract", "set"] }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+# PROJE DÜZELTME NOTLARI (CHANGELOG)
+Durum: TAMAMLANDI
+
+Bu proje devralındığında tespit edilen eksiklikler aşağıdaki şekilde giderilmiştir:
+
+1. "Loglama standart değil" SORUNU:
+   ✅ ÇÖZÜM: Winston kütüphanesi entegre edildi. Tüm loglar (Info, Error, Warn) standart bir formatta ve zaman damgasıyla 'logs/' klasörüne kaydediliyor.
+
+2. "Testler eksik" SORUNU:
+   ✅ ÇÖZÜM: Jest ile kapsamlı bir test süreci işletildi. Müşteri, Sipariş ve Ürün modülleri için toplam 67 test yazıldı ve %100 başarı sağlandı.
+
+3. "Migration ve modeller birebir uyuşmuyor" SORUNU:
+   ✅ ÇÖZÜM: Eski migration dosyaları temizlendi. Veritabanı şeması ve Sequelize modelleri (Customer, Order, Product, Stock) birebir uyumlu hale getirildi. Sıralı migration yapısı kuruldu.
+
+4. "Konfigürasyon katmanı sadeleştirilmemiş" SORUNU:
+   ✅ ÇÖZÜM: Ortam değişkenleri (.env) yapısı kuruldu. Config dosyaları sadeleştirilerek Development ve Test ortamları ayrıştırıldı.
+
+EKSTRA GELİŞTİRMELER:
++ Eksik API uçları (Stok, Sipariş detay vb.) tamamlandı.
++ Hatalı Excel verileri için ETL (Veri Aktarım) scripti yazıldı.
++ API Dokümantasyonu (Swagger) eklendi.

@@ -1,0 +1,40 @@
+MINI-CRM API UÇ NOKTALARI (TAMAMLANDI)
+Durum: Tüm uçlar aktiftir ve test edilmiştir.
+
+---------------------------------------------------
+1. MÜŞTERİ YÖNETİMİ (Customers)
+---------------------------------------------------
+GET    /api/customers           -> Tüm müşterileri listeler (Sayfalama destekler)
+GET    /api/customers/:id       -> Tek bir müşterinin detayını getirir
+POST   /api/customers           -> Yeni müşteri oluşturur (Validasyonlu)
+PUT    /api/customers/:id       -> Müşteri bilgilerini günceller
+DELETE /api/customers/:id       -> Müşteriyi siler (Soft delete veya Cascade)
+
+---------------------------------------------------
+2. ÜRÜN YÖNETİMİ (Products)
+---------------------------------------------------
+GET    /api/products            -> Tüm ürünleri listeler
+GET    /api/products/:id        -> Ürün detayını getirir
+POST   /api/products            -> Yeni ürün ekler
+PUT    /api/products/:id        -> Ürün bilgilerini günceller
+DELETE /api/products/:id        -> Ürünü siler
+
+---------------------------------------------------
+3. SİPARİŞ YÖNETİMİ (Orders)
+---------------------------------------------------
+GET    /api/orders              -> Siparişleri listeler (Filtreleme destekler)
+GET    /api/orders/:id          -> Sipariş detayını ve kalemlerini getirir
+POST   /api/orders              -> Yeni sipariş oluşturur (Stok kontrolü yapar)
+PUT    /api/orders/:id          -> Sipariş durumunu günceller
+DELETE /api/orders/:id          -> Siparişi iptal eder/siler
+
+---------------------------------------------------
+4. STOK YÖNETİMİ (Stock)
+---------------------------------------------------
+GET    /api/products/:id/stock  -> Ürünün stok durumunu gösterir
+PUT    /api/products/:id/stock  -> Stok miktarını günceller
+
+---------------------------------------------------
+NOTLAR:
+- Detaylı API kullanımı için "docs/4-API-Documentation.md" dosyasına bakınız.
+- Swagger dokümantasyonu "/api-docs" adresinde mevcuttur.

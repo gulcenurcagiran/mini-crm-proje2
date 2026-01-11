@@ -1,0 +1,39 @@
+{
+  "name": "mini-crm",
+  "version": "0.1.0",
+  "description": "MiniCRM - Yarım kalmış müşteri ve sipariş yönetim sistemi (senaryo için).",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --runInBand",
+    "test:all": "bash scripts/test-all.sh",
+    "test:customers": "bun test tests/customers.test.js",
+    "test:orders": "bun test tests/orders.test.js",
+    "test:products": "bun test tests/products.test.js",
+    "migrate": "sequelize db:migrate",
+    "migrate:undo": "sequelize db:migrate:undo",
+    "import": "node scripts/import-data.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "express-rate-limit": "^8.2.1",
+    "pg": "^8.16.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^13.0.0",
+    "winston": "^3.19.0",
+    "xlsx": "^0.18.5",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.11",
+    "sequelize-cli": "^6.6.5",
+    "supertest": "^6.3.4"
+  }
+}
