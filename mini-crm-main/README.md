@@ -122,3 +122,5 @@ Proje ile ilgili detaylı teknik raporlara docs/ klasöründen ulaşabilirsiniz:
 8-ETL-Report.md - Veri Aktarım Raporu
 
 API Endpointlerini görsel olarak incelemek için proje çalışırken: http://localhost:3000/api-docs adresini ziyaret edebilirsiniz.
+
+.
